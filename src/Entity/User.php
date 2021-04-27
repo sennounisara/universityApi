@@ -58,6 +58,27 @@ class User implements UserInterface
         $this->plainPassword = $plainPassword;
     }
 
+    /**
+     * @ORM\Column(type="text", unique=true, nullable=true)
+     */
+    private $token;
+
+    /**
+     * @return mixed
+     */
+    public function getToken()
+    {
+        return $this->token;
+    }
+
+    /**
+     * @param mixed $token
+     */
+    public function setToken($token): void
+    {
+        $this->token = $token;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -138,4 +159,5 @@ class User implements UserInterface
         // If you store any temporary, sensitive data on the user, clear it here
         $this->plainPassword = null;
     }
+
 }
