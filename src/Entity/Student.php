@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\StudentRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -48,6 +50,21 @@ class Student
      * @ORM\Column(type="string", length=255)
      */
     private $adress;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Course::class, mappedBy="Students")
+     */
+    private $courses;
+
+    /**
+     * @ORM\OneToOne(targetEntity=Paiement::class, mappedBy="Student", cascade={"persist", "remove"})
+     */
+    private $paiement;
+
+    public function __construct()
+    {
+        $this->courses = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -122,6 +139,55 @@ class Student
     public function setAdress(string $adress): self
     {
         $this->adress = $adress;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Course[]
+     */
+    public function getCourses(): Collection
+    {
+        return $this->courses;
+    }
+
+    public function addCourse(Course $course): self
+    {
+        if (!$this->courses->contains($course)) {
+            $this->courses[] = $course;
+            $course->addStudent($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCourse(Course $course): self
+    {
+        if ($this->courses->removeElement($course)) {
+            $course->removeStudent($this);
+        }
+
+        return $this;
+    }
+
+    public function getPaiement(): ?Paiement
+    {
+        return $this->paiement;
+    }
+
+    public function setPaiement(?Paiement $paiement): self
+    {
+        // unset the owning side of the relation if necessary
+        if ($paiement === null && $this->paiement !== null) {
+            $this->paiement->setStudent(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($paiement !== null && $paiement->getStudent() !== $this) {
+            $paiement->setStudent($this);
+        }
+
+        $this->paiement = $paiement;
 
         return $this;
     }
