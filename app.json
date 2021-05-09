@@ -1,0 +1,19 @@
+{
+  "name": "Api-platform example",
+  "description": "Api-platform first deploy",
+  "keywords": ["api-platform", "symfony", "sample"],
+  "success_url": "/",
+  "env": {
+    "APP_ENV":"dev",
+    "APP_SECRET":"28fa172bed9e17a582f1510247f08b5a",
+    "CORS_ALLOW_ORIGIN": "*"
+  },
+  "buildpacks": [
+    {
+      "url": "heroku/php"
+    }
+  ],
+  "scripts": {
+    "postdeploy": "php bin/console doctrine:schema:create"
+  }
+}
