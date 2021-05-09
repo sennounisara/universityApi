@@ -31,6 +31,21 @@ class Professeur
      */
     private $courses;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $lastname;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $Matricule;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $Email;
+
     public function __construct()
     {
         $this->courses = new ArrayCollection();
@@ -79,6 +94,42 @@ class Professeur
                 $course->setProfesseur(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getLastname(): ?string
+    {
+        return $this->lastname;
+    }
+
+    public function setLastname(string $lastname): self
+    {
+        $this->lastname = $lastname;
+
+        return $this;
+    }
+
+    public function getMatricule(): ?string
+    {
+        return $this->Matricule;
+    }
+
+    public function setMatricule(string $Matricule): self
+    {
+        $this->Matricule = $Matricule;
+
+        return $this;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->Email;
+    }
+
+    public function setEmail(string $Email): self
+    {
+        $this->Email = $Email;
 
         return $this;
     }
